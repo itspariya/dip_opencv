@@ -16,8 +16,8 @@ class utility
 		virtual ~utility();
 		static std::string intToString(int number);
 		static int checkValue(int value);
-		static void addGrey(image &src, image &tgt, int value);
-		static void binarize(image &src, image &tgt, int threshold);
+		static void addGrey(image &src, image &tgt, int value, int x, int y, int width, int height);
+		static void binarize(image &src, image &tgt, int threshold, int x, int y, int width, int height);
 		static void scale(image &src, image &tgt, float ratio);
 		static void cv_gray(cv::Mat &src, cv::Mat &tgt);
 		static void cv_avgblur(cv::Mat &src, cv::Mat &tgt, int WindowSize);
