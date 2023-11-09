@@ -22,30 +22,33 @@ int utility::checkValue(int value)
 }
 
 /*-----------------------------------------------------------------------**/
-void utility::addGrey(image &src, image &tgt, int value)
+void utility::addGrey(image &src, image &tgt, int value, int x, int y, int width, int height)
 {
-	tgt.resize(src.getNumberOfRows(), src.getNumberOfColumns());
-	for (int i=0; i<src.getNumberOfRows(); i++)
-		for (int j=0; j<src.getNumberOfColumns(); j++)
-		{
-			tgt.setPixel(i,j,checkValue(src.getPixel(i,j)+value)); 
-		}
+    // Ensure the target image is of the same size as the source
+    tgt.resize(src.getNumberOfRows(), src.getNumberOfColumns());
+
+    // Apply the operation only within the ROI
+    for (int i = y; i < y + height && i < src.getNumberOfRows(); i++) {
+        for (int j = x; j < x + width && j < src.getNumberOfColumns(); j++) {
+            int newValue = checkValue(src.getPixel(i, j) + value);
+            tgt.setPixel(i, j, newValue); // Set the new value only within the ROI
+        }
+    }
 }
 
 /*-----------------------------------------------------------------------**/
-void utility::binarize(image &src, image &tgt, int threshold)
+void utility::binarize(image &src, image &tgt, int threshold, int x, int y, int width, int height)
 {
-	tgt.resize(src.getNumberOfRows(), src.getNumberOfColumns());
-	for (int i=0; i<src.getNumberOfRows(); i++)
-	{
-		for (int j=0; j<src.getNumberOfColumns(); j++)
-		{
-			if (src.getPixel(i,j) < threshold)
-				tgt.setPixel(i,j,MINRGB);
-			else
-				tgt.setPixel(i,j,MAXRGB);
-		}
-	}
+    // Ensure the target image is of the same size as the source
+    tgt.resize(src.getNumberOfRows(), src.getNumberOfColumns());
+
+    // Apply the operation only within the ROI
+    for (int i = y; i < y + height && i < src.getNumberOfRows(); i++) {
+        for (int j = x; j < x + width && j < src.getNumberOfColumns(); j++) {
+            int pixelValue = src.getPixel(i, j) < threshold ? MINRGB : MAXRGB;
+            tgt.setPixel(i, j, pixelValue); // Set the new value only within the ROI
+        }
+    }
 }
 
 /*-----------------------------------------------------------------------**/
